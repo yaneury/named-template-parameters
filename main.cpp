@@ -1,7 +1,7 @@
 #include <iostream>
 #include <type_traits>
 
-#include <labels/templates.hpp>
+#include <template/arguments/extract.hpp>
 
 enum Color {
   Red,
@@ -17,8 +17,8 @@ struct ForegroundT : std::integral_constant<Color, C> {};
 
 template <class ...Args>
 struct S {
-  static constexpr Color BG = labels::Extract<BackgroundT<Color::Red>, Args...>::value;
-  static constexpr Color FG = labels::Extract<ForegroundT<Color::Blue>, Args...>::value;
+  static constexpr Color BG = ta::Extract<BackgroundT<Color::Red>, Args...>::value;
+  static constexpr Color FG = ta::Extract<ForegroundT<Color::Blue>, Args...>::value;
 
   static constexpr bool Same = FG == BG;
 };

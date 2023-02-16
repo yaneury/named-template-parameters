@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-namespace labels::internal {
+namespace ta::internal {
 
 template<typename T, typename U>
 struct IsSameTemplate : std::false_type {};

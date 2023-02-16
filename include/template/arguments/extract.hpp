@@ -2,9 +2,9 @@
 
 #include <type_traits>
 
-#include <labels/traits.hpp>
+#include <template/arguments/traits.hpp>
 
-namespace labels {
+namespace ta {
 
 // TODO: Add support for required fields
 template <typename Default, typename... Args> struct Extract;

@@ -12,11 +12,10 @@ set(LIBRARY_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/lib)
 
 message(${CMAKE_BINARY_DIR})
 
-add_library(labels SHARED include/labels/templates.hpp include/labels/traits.hpp)
+add_library(libta SHARED include/template/arguments/extract.hpp include/template/arguments/traits.hpp)
 
-add_executable(labels_driver main.cpp)
-target_include_directories(labels_driver PRIVATE ${PROJECT_SOURCE_DIR}/include)
+add_executable(ta main.cpp)
+target_include_directories(ta PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
-target_link_libraries(labels_driver labels)
-
-set_target_properties(labels PROPERTIES LINKER_LANGUAGE CXX)
+target_link_libraries(ta libta)
+set_target_properties(libta PROPERTIES LINKER_LANGUAGE CXX)
