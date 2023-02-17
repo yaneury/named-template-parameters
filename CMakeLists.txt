@@ -12,7 +12,11 @@ set(LIBRARY_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/lib)
 
 message(${CMAKE_BINARY_DIR})
 
-add_library(libta SHARED include/template/arguments/extract.hpp include/template/arguments/traits.hpp)
+add_library(libta SHARED
+  include/template/arguments/traits.hpp
+  include/template/arguments/optional.hpp
+  include/template/arguments/required.hpp
+)
 
 add_executable(ta main.cpp)
 target_include_directories(ta PRIVATE ${PROJECT_SOURCE_DIR}/include)
