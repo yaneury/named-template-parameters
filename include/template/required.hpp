@@ -2,17 +2,17 @@
 
 #include <type_traits>
 
-#include <template/arguments/traits.hpp>
+#include <template/traits.hpp>
 
 namespace ta {
 
-template <typename Default, typename... Args> struct optional;
+template <typename Default, typename... Args> struct required;
 
 template <typename Default, typename T, typename... Args>
-struct optional<Default, T, Args...> {
+struct required<Default, T, Args...> {
   template <typename _UnusedDefault, typename _UnusedT, typename Enable = void>
   struct impl : std::integral_constant<decltype(Default::value),
-                                       optional<Default, Args...>::value> {};
+                                       required<Default, Args...>::value> {};
 
   template <typename ProvidedDefault, typename ProvidedT>
   struct impl<
@@ -22,9 +22,5 @@ struct optional<Default, T, Args...> {
 
   static constexpr const auto value = impl<Default, T>::value;
 };
-
-template <typename Default>
-struct optional<Default>
-    : std::integral_constant<decltype(Default::value), Default::value> {};
 
 } // namespace ta

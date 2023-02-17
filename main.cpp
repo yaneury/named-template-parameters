@@ -1,8 +1,7 @@
 #include <iostream>
 #include <type_traits>
 
-#include <template/arguments/optional.hpp>
-#include <template/arguments/required.hpp>
+#include <template/arguments.hpp>
 
 enum Color { None, Red, Green, Blue };
 
