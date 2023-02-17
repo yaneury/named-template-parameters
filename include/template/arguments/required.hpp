@@ -15,10 +15,12 @@ struct required<Default, T, Args...> {
                                        required<Default, Args...>::value> {};
 
   template <typename ProvidedDefault, typename ProvidedT>
-  struct impl<ProvidedDefault, ProvidedT, std::enable_if_t<detail::are_same<ProvidedDefault, ProvidedT>::value>>
+  struct impl<
+      ProvidedDefault, ProvidedT,
+      std::enable_if_t<detail::are_same<ProvidedDefault, ProvidedT>::value>>
       : std::integral_constant<decltype(Default::value), ProvidedT::value> {};
 
   static constexpr const auto value = impl<Default, T>::value;
 };
 
-}
+} // namespace ta

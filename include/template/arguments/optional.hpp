@@ -15,13 +15,16 @@ struct optional<Default, T, Args...> {
                                        optional<Default, Args...>::value> {};
 
   template <typename ProvidedDefault, typename ProvidedT>
-  struct impl<ProvidedDefault, ProvidedT, std::enable_if_t<detail::are_same<ProvidedDefault, ProvidedT>::value>>
+  struct impl<
+      ProvidedDefault, ProvidedT,
+      std::enable_if_t<detail::are_same<ProvidedDefault, ProvidedT>::value>>
       : std::integral_constant<decltype(Default::value), ProvidedT::value> {};
 
   static constexpr const auto value = impl<Default, T>::value;
 };
 
 template <typename Default>
-struct optional<Default>: std::integral_constant<decltype(Default::value), Default::value> {};
+struct optional<Default>
+    : std::integral_constant<decltype(Default::value), Default::value> {};
 
-}
+} // namespace ta
