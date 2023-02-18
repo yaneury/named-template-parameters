@@ -19,7 +19,7 @@ template <class... Args> struct S {
 };
 
 int main(int argc, const char* argv[]) {
-  using T = S<ForegroundT<Color::Red>, BackgroundT<Color::Blue>>;
+  using T = S<ForegroundT<Color::Red>, BackgroundT<Color::Red>>;
   std::cout << "Same: " << T::Same << std::endl;
   return 0;
 }

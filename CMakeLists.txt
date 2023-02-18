@@ -1,26 +1,51 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.23)
 
-project(TemplateArguments)
-
-set (CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-
-include(GNUInstallDirs)
-
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
-set(LIBRARY_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/lib)
-
-message(${CMAKE_BINARY_DIR})
-
-add_library(libta SHARED
-  include/template/traits.hpp
-  include/template/optional.hpp
-  include/template/required.hpp
-  include/template/arguments.hpp
+project(ntp
+  VERSION 0.0.1
+  LANGUAGES CXX
+  DESCRIPTION "Named template parameters for modern C++"
+  HOMEPAGE_URL "https://github.com/yaneury/named-template-parameters.git"
 )
 
-add_executable(ta main.cpp)
-target_include_directories(ta PRIVATE ${PROJECT_SOURCE_DIR}/include)
+# Only C++17 is supported.
+# TODO: Enable C++11/C++14 support with necessary polyfills.
+set (CMAKE_CXX_STANDARD 17)
 
-target_link_libraries(ta libta)
-set_target_properties(libta PROPERTIES LINKER_LANGUAGE CXX)
+# Add an interface library target (it will not be built directly).
+add_library(${PROJECT_NAME} INTERFACE)
+
+# Define GNU standard installation directories.
+# Note: ${CMAKE_INSTALL_INCLUDEDIR}, ${CMAKE_INSTALL_LIBDIR} and
+# ${CMAKE_CURRENT_LIST_DIR} etc. are defined in GNUInstallDirs
+include(GNUInstallDirs)
+
+# Sets the search paths for the include files after installation.
+# This allows users to #include the library headers.
+target_include_directories(
+    ${PROJECT_NAME}
+    INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+              $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
+# Specify the target to install (ntp library defined above).
+# Set the export name <name>-config (does not need to match target name).
+install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}-config)
+
+# Associate installed target files with the export, and then install the export.
+install(
+    EXPORT ${PROJECT_NAME}-config # name of .cmake file
+    NAMESPACE ${PROJECT_NAME}:: # Set so clients must use ntp::ntp
+                                # to distinguish imported targets from internal ones.
+    # Where the .cmake file will be installed.
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
+
+# Copy include files to the install include directory.
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/${PROJECT_NAME}/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
+
+# Set project options
+option(NTP_BUILD_EXAMPLES "Set to ON to build examples" OFF)
+
+# Build examples
+if (NTP_BUILD_EXAMPLES)
+  add_subdirectory(examples)
+endif()
