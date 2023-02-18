@@ -4,7 +4,7 @@
 
 #include <template/traits.hpp>
 
-namespace ta {
+namespace ntp {
 
 template <typename Default, typename... Args> struct required;
 
@@ -23,4 +23,4 @@ struct required<Default, T, Args...> {
   static constexpr const auto value = impl<Default, T>::value;
 };
 
-} // namespace ta
+} // namespace ntp

@@ -30,18 +30,6 @@ target_include_directories(
 # Set the export name <name>-config (does not need to match target name).
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}-config)
 
-# Associate installed target files with the export, and then install the export.
-install(
-    EXPORT ${PROJECT_NAME}-config # name of .cmake file
-    NAMESPACE ${PROJECT_NAME}:: # Set so clients must use ntp::ntp
-                                # to distinguish imported targets from internal ones.
-    # Where the .cmake file will be installed.
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
-
-# Copy include files to the install include directory.
-install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/${PROJECT_NAME}/
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
-
 # Set project options
 option(NTP_BUILD_EXAMPLES "Set to ON to build examples" OFF)
 

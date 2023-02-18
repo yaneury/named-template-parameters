@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-namespace ta::detail {
+namespace ntp::detail {
 
 template <typename T, typename U> struct are_same : std::false_type {};
 
@@ -13,4 +13,4 @@ struct are_same<T<A...>, T<B...>> : std::true_type {};
 template <template <auto...> typename T, auto... A, auto... B>
 struct are_same<T<A...>, T<B...>> : std::true_type {};
 
-} // namespace ta::detail
+} // namespace ntp::detail

@@ -4,7 +4,7 @@
 
 #include <template/traits.hpp>
 
-namespace ta {
+namespace ntp {
 
 template <typename Default, typename... Args> struct optional;
 
@@ -27,4 +27,4 @@ template <typename Default>
 struct optional<Default>
     : std::integral_constant<decltype(Default::value), Default::value> {};
 
-} // namespace ta
+} // namespace ntp
