@@ -1,25 +1,49 @@
 #include <iostream>
+#include <string>
 #include <type_traits>
 
 #include <template/parameters.hpp>
 
-enum Color { None, Red, Green, Blue };
+enum Engine { V4 = 1, V6 = 2 };
 
-template <Color C> struct BackgroundT : std::integral_constant<Color, C> {};
+std::string ToString(Engine e) {
+  if (e == Engine::V4)
+    return "V4";
+  return "V6";
+}
 
-template <Color C> struct ForegroundT : std::integral_constant<Color, C> {};
+template <Engine E> struct EngineT : std::integral_constant<Engine, E> {};
 
-template <class... Args> struct S {
-  static constexpr Color BG =
-      ntp::optional<BackgroundT<Color::Red>, Args...>::value;
-  static constexpr Color FG =
-      ntp::required<ForegroundT<Color::None>, Args...>::value;
+enum DriveTrain { Two = 4, Four = 8, All = 16 };
 
-  static constexpr bool Same = FG == BG;
+std::string ToString(DriveTrain dt) {
+  if (dt == DriveTrain::Two)
+    return "2WD";
+  if (dt == DriveTrain::Four)
+    return "4WD";
+  return "AWD";
+}
+
+template <DriveTrain DT>
+struct DriveTrainT : std::integral_constant<DriveTrain, DT> {};
+
+struct Specs {
+  Engine engine;
+  DriveTrain dt;
+};
+
+template <class... Args> struct Car {
+  static constexpr Engine E =
+      ntp::optional<EngineT<Engine::V4>, Args...>::value;
+  static constexpr DriveTrain DT =
+      ntp::optional<DriveTrainT<DriveTrain::Two>, Args...>::value;
 };
 
 int main(int argc, const char* argv[]) {
-  using T = S<ForegroundT<Color::Red>, BackgroundT<Color::Red>>;
-  std::cout << "Same: " << T::Same << std::endl;
+  using V6CarWithAWD = Car<EngineT<Engine::V6>, DriveTrainT<DriveTrain::All>>;
+
+  std::cout << "Engine: " << ToString(V6CarWithAWD::E) << std::endl;
+  std::cout << "DriveTrain: " << ToString(V6CarWithAWD::DT) << std::endl;
+
   return 0;
 }
