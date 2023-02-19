@@ -23,4 +23,6 @@ struct required<Default, T, Args...> {
   static constexpr const auto value = impl<Default, T>::value;
 };
 
+// TODO: Add compiler messages when required field is not provided.
+
 } // namespace ntp

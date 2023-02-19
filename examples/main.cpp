@@ -21,10 +21,12 @@ std::string ToString(DriveTrain dt) {
     return "2WD";
   if (dt == DriveTrain::Four)
     return "4WD";
-  return "AWD";
+  if (dt == DriveTrain::All)
+    return "AWD";
+  return "UNKNOWN";
 }
 
-template <DriveTrain DT>
+template <DriveTrain DT = DriveTrain()>
 struct DriveTrainT : std::integral_constant<DriveTrain, DT> {};
 
 struct Specs {
@@ -36,7 +38,7 @@ template <class... Args> struct Car {
   static constexpr Engine E =
       ntp::optional<EngineT<Engine::V4>, Args...>::value;
   static constexpr DriveTrain DT =
-      ntp::optional<DriveTrainT<DriveTrain::Two>, Args...>::value;
+      ntp::required<DriveTrainT<DriveTrain{}>, Args...>::value;
 };
 
 int main(int argc, const char* argv[]) {
