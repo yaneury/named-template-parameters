@@ -41,11 +41,22 @@ template <class... Args> struct Car {
       ntp::required<DriveTrainT<DriveTrain{}>, Args...>::value;
 };
 
+template <typename T> struct TypeT : ntp::integral_type<T> {};
+
+template <class... Args> struct Vehicle {
+  using V = typename ntp::type<TypeT<Car<>>, Args...>::value;
+};
+
 int main(int argc, const char* argv[]) {
   using V6CarWithAWD = Car<EngineT<Engine::V6>, DriveTrainT<DriveTrain::All>>;
 
   std::cout << "Engine: " << ToString(V6CarWithAWD::E) << std::endl;
   std::cout << "DriveTrain: " << ToString(V6CarWithAWD::DT) << std::endl;
+
+  using V = Vehicle<TypeT<V6CarWithAWD>>;
+
+  std::cout << "V.Engine: " << ToString(V::V::E) << std::endl;
+  std::cout << "V.DriveTrain: " << ToString(V::V::DT) << std::endl;
 
   return 0;
 }
